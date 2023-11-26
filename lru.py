@@ -3,28 +3,28 @@ class LRUCache:
     def __init__(self, capacity: int):
         self.cache = []
         self.capacity = capacity
-        self.keys = []
+        self.queue = []
         self.hits = 0
         self.faults = 0
         self.message = None
 
     def refer(self, page):
-        if page in self.keys:
-            # It's a hit since page is already in keys
+        if page in self.queue:
+            # It's a hit since page is already in queue
             self.hits += 1
             self.message = "Hit"
-            self.keys.remove(page)
+            self.queue.remove(page)
         else:
-            # It's a fault since page is not in keys
+            # It's a fault since page is not in queue
             self.faults += 1
             self.message = "Fault"
-            if len(self.keys) == self.capacity:
-                oldest_page = self.keys.pop(0)
+            if len(self.queue) == self.capacity:
+                oldest_page = self.queue.pop(0)
                 index = self.cache.index(oldest_page) 
                 self.cache[index] = page
             else:
                 self.cache.append(page)
-        self.keys.append(page)
+        self.queue.append(page)
         
 
     def display(self, current_page):
